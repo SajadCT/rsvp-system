@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: rsvp_postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=rsvp
+      - POSTGRES_PASSWORD=rsvp
+      - POSTGRES_DB=rsvp_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:  
