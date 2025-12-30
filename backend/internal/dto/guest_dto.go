@@ -6,11 +6,22 @@ type InviteGuestRequest struct {
 	EventID uint   `json:"event_id" binding:"required"`
 }
 
+type UpdateRSVPRequest struct {
+	Status string `json:"status" binding:"required,oneof=Accepted Declined Pending"`
+}
+
 type GuestResponse struct {
 	ID     uint   `json:"id"`
 	Name   string `json:"name"`
 	Email  string `json:"email"`
 	Status string `json:"status"`
+}
 
-	EventTitle string `json:"event_title,omitempty"`
+type GuestDetailResponse struct {
+	ID            uint   `json:"id"`
+	Name          string `json:"name"`
+	Status        string `json:"status"`
+	EventTitle    string `json:"event_title"`
+	EventDate     string `json:"event_date"`
+	EventLocation string `json:"event_location"`
 }
