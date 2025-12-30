@@ -14,3 +14,10 @@ type EventResponse struct {
 	Date        string `json:"date"`
 	Location    string `json:"location"`
 }
+
+type EventStatsResponse struct {
+	Total    int64 `json:"total"`
+	Accepted int64 `json:"accepted"`
+	Declined int64 `json:"declined"`
+	Pending  int64 `json:"pending"`
+}

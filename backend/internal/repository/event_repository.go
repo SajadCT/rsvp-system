@@ -8,7 +8,7 @@ import (
 
 type EventRepository interface {
 	Create(event *models.Event) error
-	GetAll() ([]models.Event, error)
+	GetAll(userID uint) ([]models.Event, error)
 	GetByID(id uint) (*models.Event, error)
 	Delete(id uint) error
 }
@@ -25,9 +25,9 @@ func (r *eventRepo) Create(event *models.Event) error {
 	return r.db.Create(event).Error
 }
 
-func (r *eventRepo) GetAll() ([]models.Event, error) {
+func (r *eventRepo) GetAll(userID uint) ([]models.Event, error) {
 	var events []models.Event
-	err := r.db.Find(&events).Error
+	err := r.db.Where("user_id = ?", userID).Find(&events).Error
 	return events, err
 }
 

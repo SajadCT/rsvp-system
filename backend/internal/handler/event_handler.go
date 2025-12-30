@@ -2,6 +2,8 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
+
 	"rsvp-system/internal/dto"
 	"rsvp-system/internal/models"
 	"rsvp-system/internal/service"
@@ -18,6 +20,11 @@ func NewEventHandler(s service.EventService) *EventHandler {
 }
 
 func (h *EventHandler) CreateEvent(c *gin.Context) {
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
 
 	var req dto.CreateEventRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -32,7 +39,7 @@ func (h *EventHandler) CreateEvent(c *gin.Context) {
 		Location:    req.Location,
 	}
 
-	if err := h.service.CreateEvent(&event); err != nil {
+	if err := h.service.CreateEvent(&event, userID.(uint)); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -49,7 +56,13 @@ func (h *EventHandler) CreateEvent(c *gin.Context) {
 }
 
 func (h *EventHandler) GetEvents(c *gin.Context) {
-	events, _ := h.service.GetAllEvents()
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		return
+	}
+
+	events, _ := h.service.GetAllEvents(userID.(uint))
 
 	var response []dto.EventResponse
 	for _, e := range events {
@@ -62,5 +75,32 @@ func (h *EventHandler) GetEvents(c *gin.Context) {
 		})
 	}
 
+	if response == nil {
+		response = []dto.EventResponse{}
+	}
+
 	c.JSON(http.StatusOK, gin.H{"data": response})
+}
+
+func (h *EventHandler) DeleteEvent(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	if err := h.service.DeleteEvent(uint(id)); err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Event not found"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Event deleted successfully"})
+}
+
+func (h *EventHandler) GetStats(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	statsMap, _ := h.service.GetEventStats(uint(id))
+
+	response := dto.EventStatsResponse{
+		Total:    statsMap["total"],
+		Accepted: statsMap["accepted"],
+		Declined: statsMap["declined"],
+		Pending:  statsMap["pending"],
+	}
+
+	c.JSON(http.StatusOK, response)
 }
