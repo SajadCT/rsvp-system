@@ -14,11 +14,10 @@ func main() {
 	}
 
 	r := routes.SetUpRoutes(db)
+
 	log.Println("Server running on http://localhost:8080")
 
-	Ginerr := r.Run(":8080")
-	if Ginerr != nil {
-		log.Fatal(err)
+	if err := r.Run(":8080"); err != nil {
+		log.Fatal("failed to start server:", err)
 	}
-
 }

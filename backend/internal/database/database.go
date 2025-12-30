@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"rsvp-system/config"
+	"rsvp-system/internal/models"
 	"time"
 
 	"gorm.io/driver/postgres"
@@ -11,17 +12,16 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-// SetupDatabase initializes the database connection
 func SetupDatabase() (*gorm.DB, error) {
 	dsn := config.LoadDatabaseConfig()
 
 	newLogger := logger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
+		log.New(os.Stdout, "\r\n", log.LstdFlags),
 		logger.Config{
-			SlowThreshold:             200 * time.Millisecond, // log queries slower than this
-			LogLevel:                  logger.Info,            // Log all queries (Info = all, Warn = slow queries, Error = only errors)
-			IgnoreRecordNotFoundError: true,                   // ignore ErrRecordNotFound
-			Colorful:                  true,                   // colorful output
+			SlowThreshold:             200 * time.Millisecond,
+			LogLevel:                  logger.Info,
+			IgnoreRecordNotFoundError: true,
+			Colorful:                  true,
 		},
 	)
 
@@ -29,6 +29,8 @@ func SetupDatabase() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	db.AutoMigrate(&models.Guest{}, &models.Event{})
 
 	return db, nil
 }
