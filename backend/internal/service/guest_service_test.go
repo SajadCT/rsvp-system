@@ -16,10 +16,10 @@ func TestInviteGuest_Success(t *testing.T) {
 	newGuest := &models.Guest{Name: "Alice", EventID: 1}
 	mockEvent := &models.Event{Title: "Existing Event"}
 
-	// Expectation 1: Check Event Exists
+	// Check Event Exists
 	mockEventRepo.On("GetByID", uint(1)).Return(mockEvent, nil)
 
-	// Expectation 2: Create Guest
+	// Create Guest
 	mockGuestRepo.On("Create", newGuest).Return(nil)
 
 	err := guestService.InviteGuest(newGuest)
