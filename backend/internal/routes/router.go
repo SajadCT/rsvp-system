@@ -12,18 +12,16 @@ import (
 
 func SetUpRoutes(db *gorm.DB) *gin.Engine {
 	r := gin.Default()
+	r.Use(middleware.CORS())
 
-	// Repos
 	userRepo := repository.NewUserRepository(db)
 	eventRepo := repository.NewEventRepository(db)
 	guestRepo := repository.NewGuestRepository(db)
 
-	// Services
 	authService := service.NewAuthService(userRepo)
 	eventService := service.NewEventService(eventRepo, guestRepo)
 	guestService := service.NewGuestService(guestRepo, eventRepo)
 
-	// Handlers
 	authHandler := handler.NewAuthHandler(authService)
 	eventHandler := handler.NewEventHandler(eventService)
 	guestHandler := handler.NewGuestHandler(guestService)
@@ -36,7 +34,6 @@ func SetUpRoutes(db *gorm.DB) *gin.Engine {
 		api.GET("/guests/details/:id", guestHandler.GetGuestDetails)
 		api.PATCH("/guests/:id/rsvp", guestHandler.UpdateRSVP)
 
-		// Protected Routes (Host Only)
 		protected := api.Group("/")
 		protected.Use(middleware.AuthMiddleware())
 		{
