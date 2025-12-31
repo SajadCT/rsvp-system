@@ -30,7 +30,12 @@ func SetupDatabase() (*gorm.DB, error) {
 		return nil, err
 	}
 
-	db.AutoMigrate(&models.Guest{}, &models.Event{})
+	log.Println("Running Database Migrations...")
+	err = db.AutoMigrate(&models.User{}, &models.Event{}, &models.Guest{})
+	if err != nil {
+		log.Fatal("Migration Failed: ", err)
+	}
+	log.Println("Database Migrated Successfully!")
 
 	return db, nil
 }
