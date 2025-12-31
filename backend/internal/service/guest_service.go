@@ -23,7 +23,7 @@ func NewGuestService(repo repository.GuestRepository, eventRepo repository.Event
 }
 
 func (s *guestService) InviteGuest(guest *models.Guest) error {
-	// Logic: Ensure event exists
+
 	_, err := s.eventRepo.GetByID(guest.EventID)
 	if err != nil {
 		return errors.New("event not found")
