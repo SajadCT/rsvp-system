@@ -18,9 +18,8 @@ type DatabaseConfig struct {
 	TimeZone string
 }
 
-// LoadDatabaseConfig loads env vars and builds config
 func LoadDatabaseConfig() string {
-	// Load .env file (safe to call even if file doesn't exist)
+
 	if err := godotenv.Load(); err != nil {
 		log.Println("No .env file found, relying on environment variables")
 	}
