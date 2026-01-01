@@ -1,16 +1,41 @@
 services:
-  db:
-    image: postgres:15-alpine
+  postgres:
+    image: postgres:16
     container_name: rsvp_postgres
-    restart: always
+    restart: unless-stopped
     environment:
-      - POSTGRES_USER=rsvp
-      - POSTGRES_PASSWORD=rsvp
-      - POSTGRES_DB=rsvp_db
+      POSTGRES_DB: rsvpdb
+      POSTGRES_USER: rsvpuser
+      POSTGRES_PASSWORD: rsvppass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: rsvp_backend
+    restart: unless-stopped
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_USER: rsvpuser
+      DB_PASSWORD: rsvppass
+      DB_NAME: rsvpdb
+    ports:
+      - "8080:8080"
+
+  # BOX 3: Frontend
+  frontend:
+    build: ./frontend
+    container_name: rsvp_frontend
+    restart: always
+    ports:
+      - "80:80" # Maps your computer's port 80 to the container's port 80
+    depends_on:
+      - backend
 
 volumes:
-  postgres_data:  
+  pgdata:
