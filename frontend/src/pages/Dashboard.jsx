@@ -176,9 +176,9 @@ const Dashboard = () => {
                   <h2 className="text-3xl font-bold text-gray-900">{selectedEvent.title}</h2>
                   <p className="text-gray-500 mt-1 flex items-center gap-2"><MapPin size={16}/> {selectedEvent.location}</p>
                 </div>
-                <button onClick={handleExport} className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-indigo-600 transition shadow-sm">
+                {/* <button onClick={handleExport} className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-indigo-600 transition shadow-sm">
                   <Download size={16} /> Export CSV
-                </button>
+                </button> */}
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
