@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const res = await axios.post('http://localhost:8080/api/login', { email, password });
+      const res = await axios.post('/api/login', { email, password });
       const { token, user } = res.data;
       localStorage.setItem('token', token);
       setToken(token);
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      await axios.post('http://localhost:8080/api/register', { name, email, password });
+      await axios.post('/api/register', { name, email, password });
       return true;
     } catch (error) {
       return false;

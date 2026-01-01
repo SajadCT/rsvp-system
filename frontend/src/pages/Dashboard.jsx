@@ -7,7 +7,7 @@ import {
   Users, CheckCircle, XCircle, Clock, Copy, Check 
 } from 'lucide-react';
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = '/api';
 
 
 const StatCard = ({ icon: Icon, label, count, color }) => (
@@ -103,12 +103,45 @@ const Dashboard = () => {
     } catch (e) { alert("Export failed"); }
   };
 
-  const handleCopyLink = (id) => {
-    const link = `${window.location.origin}/rsvp/${id}`;
-    navigator.clipboard.writeText(link);
+  const BASE_URL = "http://192.168.0.193";
+
+const handleCopyLink = (id) => {
+  const link = `${BASE_URL}/rsvp/${id}`;
+
+  
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(link)
+      .then(() => {
+        setCopiedId(id);
+        setTimeout(() => setCopiedId(null), 2000);
+      })
+      .catch(() => fallbackCopy(link, id));
+  } else {
+  
+    fallbackCopy(link, id);
+  }
+};
+
+const fallbackCopy = (text, id) => {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed"; 
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.select();
+
+  try {
+    document.execCommand("copy");
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 2000);
-  };
+  } catch (err) {
+    alert("Copy failed. Please copy manually.");
+  }
+
+  document.body.removeChild(textarea);
+};
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -176,9 +209,7 @@ const Dashboard = () => {
                   <h2 className="text-3xl font-bold text-gray-900">{selectedEvent.title}</h2>
                   <p className="text-gray-500 mt-1 flex items-center gap-2"><MapPin size={16}/> {selectedEvent.location}</p>
                 </div>
-                {/* <button onClick={handleExport} className="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 hover:text-indigo-600 transition shadow-sm">
-                  <Download size={16} /> Export CSV
-                </button> */}
+                
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

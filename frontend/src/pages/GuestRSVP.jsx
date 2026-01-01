@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Calendar, MapPin, Check, X } from 'lucide-react';
 
-const API_URL = 'http://localhost:8080/api';
+const API_URL = '/api';
 
 const GuestRSVP = () => {
   const { id } = useParams();
