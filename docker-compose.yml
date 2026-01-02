@@ -3,10 +3,12 @@ services:
     image: postgres:16
     container_name: rsvp_postgres
     restart: unless-stopped
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: rsvpdb
-      POSTGRES_USER: rsvpuser
-      POSTGRES_PASSWORD: rsvppass
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
     ports:
@@ -18,22 +20,19 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
+    env_file:
+      - .env
     environment:
       DB_HOST: postgres
-      DB_PORT: 5432
-      DB_USER: rsvpuser
-      DB_PASSWORD: rsvppass
-      DB_NAME: rsvpdb
     ports:
       - "8080:8080"
 
-  # BOX 3: Frontend
   frontend:
     build: ./frontend
     container_name: rsvp_frontend
     restart: always
     ports:
-      - "80:80" # Maps your computer's port 80 to the container's port 80
+      - "80:80"
     depends_on:
       - backend
 
