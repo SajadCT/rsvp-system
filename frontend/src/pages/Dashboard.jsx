@@ -103,13 +103,10 @@ const Dashboard = () => {
     } catch (e) { alert("Export failed"); }
   };
 
-  const BASE_URL = "http://192.168.0.193";
-
 const handleCopyLink = (id) => {
-  const link = `${BASE_URL}/rsvp/${id}`;
+  const link = `${window.location.origin}/rsvp/${id}`;
 
-  
-  if (navigator.clipboard && navigator.clipboard.writeText) {
+  if (navigator.clipboard?.writeText) {
     navigator.clipboard.writeText(link)
       .then(() => {
         setCopiedId(id);
@@ -117,10 +114,10 @@ const handleCopyLink = (id) => {
       })
       .catch(() => fallbackCopy(link, id));
   } else {
-  
     fallbackCopy(link, id);
   }
 };
+
 
 const fallbackCopy = (text, id) => {
   const textarea = document.createElement("textarea");
