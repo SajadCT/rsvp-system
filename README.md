@@ -1,17 +1,42 @@
-# Event RSVP System
+# Event RSVP System – Event & Guest Response Management
 
-A simple web application to manage events and track guest responses (RSVPs).  
-Built using **Go (Gin + GORM)** for the backend, **React** for the frontend, and **PostgreSQL** as the database.
+A full-stack web application built to simplify event management and guest response tracking.  
+The Event RSVP System allows organizers to create events, invite guests, and track RSVP responses (Yes / No / Maybe) through a clean and structured workflow.
 
+---
 
-## Features
+## Project Overview
 
+The Event RSVP System is designed for scenarios such as parties, meetings, weddings, and corporate events where organizers need an easy way to manage invitations and monitor guest attendance.
+
+The application follows a layered backend architecture and is deployed using containerized services to ensure scalability, maintainability, and clean separation of concerns.
+
+---
+
+## Key Features
+
+### Event Management
 - Create and manage events
-- Send invitations to guests
-- Track RSVP responses (Yes / No / Maybe)
-- Manage guest details
-- Simple and clean architecture
+- Define event details such as title and date
+- View all created events
 
+### Guest Management
+- Add and manage guest details
+- Maintain unique guest records
+- Associate guests with events
+
+### RSVP Tracking
+- Guests can respond with **Yes / No **
+- Track RSVP status per event
+- Maintain RSVP history
+
+### Architecture & Design
+- Clean layered architecture (Handler → Service → Repository)
+- DTO-based request validation
+- RESTful API design
+- Clear separation of frontend and backend
+
+---
 
 ## Tech Stack
 
@@ -25,9 +50,35 @@ Built using **Go (Gin + GORM)** for the backend, **React** for the frontend, and
 - React
 - Axios
 
-### DevOps
+### DevOps & Deployment
 - Docker
 - Docker Compose
+- Nginx (Reverse Proxy)
 
-## Project Structure
+---
 
+## Getting Started
+
+### Prerequisites
+- Docker
+- Docker Compose
+- PostgreSQL (for local, non-docker usage)
+
+---
+
+## Environment Configuration
+
+The application uses environment variables for database configuration.
+
+### Create `.env` File
+
+Create a `.env` file in the backend root directory and add the following:
+
+```.env
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=rsvp
+DB_PASSWORD=your_password
+DB_NAME=rsvp_db
+DB_SSLMODE=disable
+DB_TIMEZONE=UTC
