@@ -66,7 +66,15 @@ The application follows a layered backend architecture and is deployed using con
 
 ---
 
-## Environment Configuration
+## How to Run
+
+### 1.Clone the Project
+```bash
+git clone https://github.com/SajadCT/rsvp-system.git
+cd rsvp-system
+```
+
+## 2.Environment Configuration
 
 The application uses environment variables for database configuration.
 
@@ -75,10 +83,17 @@ The application uses environment variables for database configuration.
 Create a `.env` file in the backend root directory and add the following:
 
 ```.env
-DB_HOST=localhost
 DB_PORT=5432
 DB_USER=rsvp
 DB_PASSWORD=your_password
 DB_NAME=rsvp_db
 DB_SSLMODE=disable
-DB_TIMEZONE=UTC
+```
+## Running the Project with Docker
+
+This project is fully containerized and can be started using **Docker Compose**.
+
+```bash
+docker compose up --build -d
+```
+
